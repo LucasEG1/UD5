@@ -1,17 +1,9 @@
-/*
- * Proyecto HolaMundoGithub - Archivo HolaMundoGithub.java - Compañía DAW
- * Licencia Creative Commons BY-NC-SA 4.0
- * https://creativecommons.org/licenses/by-nc-sa/4.0/
- */
+ 
 
 package holamundogithub;
 
-/**
- * @author Lucas Ezequiel Gyori <legyori@gmail.com> 
- * @company DAW
- * @version 1.0
- * @date 22 nov. 2021 19:06:18
- */
+import java.util.Scanner;
+
 public class HolaMundoGithub {
 
     /**
@@ -19,6 +11,12 @@ public class HolaMundoGithub {
      */
     public static void main(String[] args) {
         System.out.println("Hello, World!");
+        
+        Scanner leer = new Scanner(System.in);
+        
+        int a = leer.nextInt();
+        
+        System.out.println(a);
     }
 
 }
