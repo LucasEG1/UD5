@@ -6,38 +6,44 @@ import java.util.Scanner;
 
 public class Entregable5 {
     
+    //Variables globales
     public static String turno = "X";
     public static String[][] tablero = new String[3][3];
     public static boolean sigueJugando = true;
     
+    //Comprobar después de cada jugada si hay alguna posibilidad de victoria
     public static void ganador(){
         
         String linea[] = new String[8];
-        linea[0] = (Arrays.toString(tablero[0]) + Arrays.toString(tablero[1]) + Arrays.toString(tablero[2]));
-        linea[1] = (Arrays.toString(tablero[3]) + Arrays.toString(tablero[4]) + Arrays.toString(tablero[5]));
-        linea[2] = (Arrays.toString(tablero[6]) + Arrays.toString(tablero[7]) + Arrays.toString(tablero[8]));
-        linea[3] = (Arrays.toString(tablero[0]) + Arrays.toString(tablero[3]) + Arrays.toString(tablero[6]));
-        linea[4] = (Arrays.toString(tablero[1]) + Arrays.toString(tablero[4]) + Arrays.toString(tablero[7]));
-        linea[5] = (Arrays.toString(tablero[8]) + Arrays.toString(tablero[5]) + Arrays.toString(tablero[2]));
-        linea[6] = (Arrays.toString(tablero[0]) + Arrays.toString(tablero[4]) + Arrays.toString(tablero[8]));
-        linea[7] = (Arrays.toString(tablero[6]) + Arrays.toString(tablero[4]) + Arrays.toString(tablero[2]));
+        linea[0] = (tablero[0][0] + tablero[0][1] + tablero[0][2]);
+        linea[1] = (tablero[1][0] + tablero[1][1] + tablero[1][2]);
+        linea[2] = (tablero[2][0] + tablero[2][1] + tablero[2][2]);
+        linea[3] = (tablero[0][0] + tablero[1][0] + tablero[2][0]);
+        linea[4] = (tablero[0][1] + tablero[1][1] + tablero[2][1]);
+        linea[5] = (tablero[0][2] + tablero[1][2] + tablero[2][2]);
+        linea[6] = (tablero[0][0] + tablero[1][1] + tablero[2][2]);
+        linea[7] = (tablero[0][2] + tablero[1][1] + tablero[2][0]);
         
-        /*for (int i = 0; i < linea.length; i++) {
+        for (int i = 0; i < linea.length; i++) {
             String aux = linea[i];
             
-            if (aux.equals("XXX")) {
-                System.out.println("¡X es el ganador!");
-                sigueJugando = false;
-            }
-            else 
-                if (aux.equals("OOO")) {
-                System.out.println("¡O es el ganador!");
-                sigueJugando = false;
-            } else
+            switch (aux) {
+                case "XXX":
+                    System.out.println("¡X es el ganador!");
+                    sigueJugando = false;
                     break;
-        }*/
+                case "OOO":
+                    System.out.println("¡O es el ganador!");
+                    sigueJugando = false;
+                    break;
+                default:
+                    sigueJugando = true;
+                    break;
+            }
+        }
     }
     
+    //Para determinar a quién le toca poner ficha después de cada jugada
     public static void cambioTurno () {
         if ("X".equals(turno)) {
             turno = "O";
@@ -46,8 +52,9 @@ public class Entregable5 {
         
     }
     
+    //Únicamente utilizado para el principio del juego, muestra el tablero vacío
     public static void generarTabInicial(){
-        //String[][] tablero = new String[3][3];
+        
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero.length; j++) {
                 tablero[i][j] = "-";
@@ -55,6 +62,7 @@ public class Entregable5 {
         }
     }
     
+    //Enseña el tablero después de poner la ficha
     public static void mostrarTablero() {
         for (int i = 0; i < tablero.length; i++) {
             for (int j = 0; j < tablero.length; j++) {
@@ -64,6 +72,7 @@ public class Entregable5 {
         }
     }
     
+    //Pedir en un rango (usado para que la persona ponga una ficha dentro del tablero
     public static int rango(int min, int max){
         Scanner in = new Scanner(System.in);
         int n;
@@ -81,13 +90,38 @@ public class Entregable5 {
         return n;
     }
     
+    //Comprobar si el lugar elegido ya tiene una ficha puesta o no.
+    public static void comprobarLugar (int posi, int posj){
+        
+        while (!"-".equals(tablero[posi][posj])) {
+                System.out.println("Esta posición ya está ocupada por otro jugador");
+                System.out.println("En qué fila quieres poner " + turno + "?");
+                posi = (rango(1,3) - 1);
+                System.out.println("En qué columna quieres poner " + turno + "?");
+                posj = (rango(1,3) - 1);
+            }
+            
+            tablero[posi][posj] = turno;
+    }
+    
+    
+    
     public static void main(String[] args) {
+        
+        int contX = 0;
+        int contO = 0;
+        
+        //JUGADOR CONTRA JUGADOR
+        //JUGADOR CONTRA JUGADOR
+        //JUGADOR CONTRA JUGADOR
+        //JUGADOR CONTRA JUGADOR
+        //JUGADOR CONTRA JUGADOR
         
         Scanner leer = new Scanner(System.in);
         
         generarTabInicial();
             
-        while (sigueJugando) {
+        while (sigueJugando == true) {
             
             mostrarTablero();
             
@@ -97,27 +131,19 @@ public class Entregable5 {
             System.out.println("En qué columna quieres poner " + turno + "?");
             int posj = (rango(1,3) - 1);
 
-            /// COMPROBAR OCUPACION
-            tablero[posi][posj] = turno;
+            comprobarLugar(posi, posj);
+            
+            if ("X".equals(turno) && contX < 3)
+                System.out.println(contX);
+                contX++;
+            if ("O".equals(turno) && contO < 3)
+                System.out.println(contO);
+                contO++;
             
             
             cambioTurno();
-            //ganador();
+            
+            ganador();
         }
-        /*// Rellenamos la matriz con los números del 1 al 25
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero[0].length; j++) {
-                tablero[i][j] = '-';
-            }
-        }
-
-        // Mostramos la matriz
-        for (int i = 0; i < tablero.length; i++) {
-            System.out.print("Fila " + i + ": ");
-            for (int j = 0; j < tablero[0].length; j++) {
-                System.out.print(tablero[i][j] + " ");
-            }
-            System.out.println("");
-        }*/
     }
 }
