@@ -1,7 +1,6 @@
 
 package ud5;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Entregable5 {
@@ -12,7 +11,7 @@ public class Entregable5 {
     public static boolean sigueJugando = true;
     
     //Comprobar después de cada jugada si hay alguna posibilidad de victoria
-    public static void ganador(){
+    public static void ganador(int contX, int contO){
         
         String linea[] = new String[8];
         linea[0] = (tablero[0][0] + tablero[0][1] + tablero[0][2]);
@@ -30,14 +29,14 @@ public class Entregable5 {
             switch (aux) {
                 case "XXX":
                     System.out.println("¡X es el ganador!");
-                    sigueJugando = false;
+                    
                     break;
                 case "OOO":
                     System.out.println("¡O es el ganador!");
                     sigueJugando = false;
                     break;
                 default:
-                    sigueJugando = true;
+                    System.out.println("");;
                     break;
             }
         }
@@ -117,8 +116,6 @@ public class Entregable5 {
         //JUGADOR CONTRA JUGADOR
         //JUGADOR CONTRA JUGADOR
         
-        Scanner leer = new Scanner(System.in);
-        
         generarTabInicial();
             
         while (sigueJugando == true) {
@@ -133,17 +130,29 @@ public class Entregable5 {
 
             comprobarLugar(posi, posj);
             
-            if ("X".equals(turno) && contX < 3)
-                System.out.println(contX);
-                contX++;
-            if ("O".equals(turno) && contO < 3)
-                System.out.println(contO);
-                contO++;
-            
-            
+            while (contX < 3 && contO < 3) {
+                
+                if ("X".equals(turno))
+                    contX++;
+                
+                if ("O".equals(turno))
+                    contO++;
+                
+                if (contX <= 2) {
+                    System.out.println("**************");
+                    System.out.println("*X máx fichas*");
+                    System.out.println("**************");
+                }
+
+                if (contO <= 2) {
+                    System.out.println("**************");
+                    System.out.println("*X máx fichas*");
+                    System.out.println("**************");
+                }
+            }
             cambioTurno();
             
-            ganador();
+            ganador(contX, contO);
         }
     }
 }
