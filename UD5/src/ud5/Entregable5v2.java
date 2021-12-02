@@ -3,7 +3,7 @@ package ud5;
 
 import java.util.Scanner;
 
-public class Entregable5 {
+public class Entregable5v2 {
     
     //VARIABLES GLOBALES VARIABLES GLOBALES
     public static String turno = "X";
