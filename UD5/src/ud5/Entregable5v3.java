@@ -3,7 +3,7 @@ package ud5;
 
 import java.util.Scanner;
 
-public class Entregable5v2 {
+public class Entregable5v3 {
     
     //VARIABLES GLOBALES VARIABLES GLOBALES
     public static String turno = "X";
@@ -19,13 +19,58 @@ public class Entregable5v2 {
     
     generarTabInicial();
             
+    while (sigueJugando) {
+
+        mostrarTablero();
+
+        if (turnosTotales <= 5) {
+            ponerFicha(); 
+            turnosTotales++;
+        }
+
+        if (turnosTotales == 6) {
+            System.out.println("*********************************************************");
+            System.out.println("SE HAN ALCANZADO EL MÁXIMO DE FICHAS PARA AMBOS JUGADORES");
+            System.out.println("AHORA, CADA JUGADOR DEBERÁ MOVER UNA FICHA EN SU TURNO");
+            System.out.println("*********************************************************");
+            mostrarTablero();
+            turnosTotales++;
+        }
+
+        if (turnosTotales > 6 && turnosTotales < 25) {
+            System.out.println("TURNO DE " + turno + "\n");
+            cambiarFicha();
+            turnosTotales++;
+        }
+        
+        if (turnosTotales == 25) {
+            System.out.println("\n\nSe han alcanzado el número máximo de turnos\n"
+                    + "y no ha ganado nadie, por lo que los jugadores están\n"
+                    + "EMPATADOS, Bravo.");
+            sigueJugando = false;
+        }
+        muestraCuantosTurnos();
+
+        cambioTurno();
+
+        ganador();
+    }
+}
+    
+    //Reemplaza los movimientos del jugador "O" por randoms válidos.
+    public static void jugadorContraMaquina() {
+    generarTabInicial();
+            
         while (sigueJugando) {
             
             mostrarTablero();
             
-            
             if (turnosTotales <= 5) {
-                ponerFicha(); 
+                if ("X".equals(turno))
+                    ponerFicha();
+                if ("O".equals(turno)){
+                    ponerFichaMaq();
+                } 
                 turnosTotales++;
             }
 
@@ -38,13 +83,17 @@ public class Entregable5v2 {
                 turnosTotales++;
             }
             
-            if (turnosTotales > 6 && turnosTotales < 10) {
-                System.out.println("TURNO DE " + turno + "\n");
-                cambiarFicha();
+            if (turnosTotales > 6 && turnosTotales < 25) {
+                System.out.println("TURNO DE " + turno);
+                if ("X".equals(turno))
+                    cambiarFicha();
+                if ("O".equals(turno)){
+                    cambiarFichaMaq();
+                } 
                 turnosTotales++;
             }
             
-            if (turnosTotales == 10) {
+            if (turnosTotales == 25) {
                 System.out.println("\n\nSe han alcanzado el número máximo de turnos\n"
                         + "y no ha ganado nadie, por lo que los jugadores están\n"
                         + "EMPATADOS, Bravo.");
@@ -53,11 +102,10 @@ public class Entregable5v2 {
             muestraCuantosTurnos();
 
             cambioTurno();
-
+            mostrarTablero();
             ganador();
-    
         }
-}
+    }
     
     //Únicamente utilizado para el principio del juego, muestra el tablero vacío
     public static void generarTabInicial(){
@@ -82,11 +130,20 @@ public class Entregable5v2 {
     //Pide Fila y columna para poner ficha de UN jugador
     public static void ponerFicha() {
         System.out.println("En qué fila quieres poner " + turno + "?");
-                int poneri = (rango(1, 3) - 1);
-                System.out.println("En qué columna quieres poner " + turno + "?");
-                int ponerj = (rango(1, 3) - 1);
-                
-                comprobarLugar(poneri, ponerj);
+        int poneri = (rango(1, 3) - 1);
+        System.out.println("En qué columna quieres poner " + turno + "?");
+        int ponerj = (rango(1, 3) - 1);
+
+        comprobarLugar(poneri, ponerj);
+    }
+    
+    //Poner ficha pero para la máquina
+    public static void ponerFichaMaq() {
+        
+        int poneri = (int) (Math.random() * 3);
+        int ponerj = (int) (Math.random() * 3);
+        
+        comprobarLugarMaq(poneri, ponerj);
     }
     
     //Pedir en un rango (usado para que la persona ponga una ficha dentro del tablero
@@ -108,17 +165,26 @@ public class Entregable5v2 {
     }
     
     //Comprobar si el lugar elegido ya tiene una ficha puesta o no.
-    public static void comprobarLugar (int posi, int posj){
+    public static void comprobarLugar (int posi, int posj) {
         
         while (!"-".equals(tablero[posi][posj])) {
-                System.out.println("Esta posición ya está ocupada por otro jugador");
-                System.out.println("En qué fila quieres poner " + turno + "?");
-                posi = (rango(1,3) - 1);
-                System.out.println("En qué columna quieres poner " + turno + "?");
-                posj = (rango(1,3) - 1);
-            }
-            
-            tablero[posi][posj] = turno;
+            System.out.println("Esta posición ya está ocupada por otro jugador");
+            System.out.println("En qué fila quieres poner " + turno + "?");
+            posi = (rango(1,3) - 1);
+            System.out.println("En qué columna quieres poner " + turno + "?");
+            posj = (rango(1,3) - 1);
+        }
+        tablero[posi][posj] = turno;
+    }
+    
+    //ComprobarLugar pero para Jugador contra máquina
+    public static void comprobarLugarMaq (int posi, int posj) {
+        
+        while (!"-".equals(tablero[posi][posj])) {
+            posi = (int) (Math.random() * 3);
+            posj = (int) (Math.random() * 3);
+        }
+        tablero[posi][posj] = turno;
     }
     
     //Comprobar después de cada jugada si hay alguna posibilidad de victoria
@@ -159,13 +225,14 @@ public class Entregable5v2 {
             turno = "O";
         } else if ("O".equals(turno))
             turno = "X";
-        
     }
     
+    //Muestra cuántos turnos han pasado.
     public static void muestraCuantosTurnos(){
         System.out.println("Se han jugado " + turnosTotales + " turnos.");
     }
     
+    //Pide posición de ficha a quitar y posición de destino de la ficha
     public static void cambiarFicha() {
         
         int quitarFila;
@@ -176,26 +243,42 @@ public class Entregable5v2 {
         System.out.println(turno + " QUE QUIERAS QUITAR: Columna");
         quitarColumna = (rango(1,3) -1);
         
-            while (!tablero[quitarFila][quitarColumna].equals(turno)) {
-                
-                System.out.println("********************");
-                System.out.println("¡Esa no es tu ficha!");
-                System.out.println("********************");
-                
-                System.out.println(turno + " QUE QUIERAS QUITAR: Fila");
-                 quitarFila = (rango(1,3) -1);
-                System.out.println(turno + " QUE QUIERAS QUITAR: Columna");
-                quitarColumna = (rango(1,3) -1);
-            }
-        
-        
+        while (!tablero[quitarFila][quitarColumna].equals(turno)) {
+
+            System.out.println("********************");
+            System.out.println("¡Esa no es tu ficha!");
+            System.out.println("********************");
+
+            System.out.println(turno + " QUE QUIERAS QUITAR: Fila");
+             quitarFila = (rango(1,3) -1);
+            System.out.println(turno + " QUE QUIERAS QUITAR: Columna");
+            quitarColumna = (rango(1,3) -1);
+        }
         if (tablero[quitarFila][quitarColumna].equals(turno)){
-            tablero[quitarFila][quitarColumna] = "-";
             ponerFicha();
+            tablero[quitarFila][quitarColumna] = "-";
         }
     }
     
-    
+    //Cambia la posición de la ficha en el turno de la máquina.
+    public static void cambiarFichaMaq() {
+        
+        int quitarFila;
+        int quitarColumna;
+        
+        quitarFila = (int) (Math.random() * 3);
+        quitarColumna = (int) (Math.random() * 3);
+        
+        while (!tablero[quitarFila][quitarColumna].equals(turno)) {
+
+            quitarFila = (int) (Math.random() * 3);
+            quitarColumna = (int) (Math.random() * 3);
+        }
+        if (tablero[quitarFila][quitarColumna].equals(turno)){
+            ponerFichaMaq();
+            tablero[quitarFila][quitarColumna] = "-";
+        }
+    }
     
     public static void main(String[] args) {
         
@@ -210,8 +293,8 @@ public class Entregable5v2 {
         System.out.println("1. Jugador contra jugador \n"
                          + "2. Jugador vs Máquina \n"
                          + "3. Salir del juego");
-        rango(1,3);
-        int opcion = leer.nextInt();
+        
+        int opcion = rango(1,3);
         
         switch(opcion) {
             case 1:
@@ -221,21 +304,12 @@ public class Entregable5v2 {
             
             case 2: 
                 System.out.println("==JUGADOR CONTRA MÁQUINA==");
+                jugadorContraMaquina();
             break;
             
             case 3:
                 System.out.println("¡Hasta la próxima!");
-                jugadorContraMaquina();
             break;
         }
-        
-    }
-
-    public static void jugadorContraMaquina() {
-        
-        generarTabInicial();
-        
-        
-        
     }
 }
