@@ -35,6 +35,7 @@ public class Entregable5v3 {
             System.out.println("*********************************************************");
             mostrarTablero();
             turnosTotales++;
+            cambioTurno();
         }
 
         if (turnosTotales > 6 && turnosTotales < 25) {
@@ -102,7 +103,6 @@ public class Entregable5v3 {
             muestraCuantosTurnos();
 
             cambioTurno();
-            mostrarTablero();
             ganador();
         }
     }
@@ -206,11 +206,13 @@ public class Entregable5v3 {
             switch (aux) {
                 case "XXX":
                     System.out.println("¡X es el ganador!");
+                    mostrarTablero();
                     sigueJugando = false;
                     break;
                 case "OOO":
                     System.out.println("¡O es el ganador!");
                     sigueJugando = false;
+                    mostrarTablero();
                     break;
                 default:
                     System.out.println("");;
