@@ -32,6 +32,7 @@ public class RetoPong {
                             } else {
                                 puntosD++;
                             }
+                            break;
                     }
                 }
                 System.out.println(puntosI + " " + puntosD);
